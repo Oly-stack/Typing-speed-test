@@ -7,11 +7,9 @@ function renderCharacters(text) {
     currentText = text;
     quoteDisplay.innerHTML = "";
 
-    const characters = text.split("");
-
-    characters.forEach((character) => {
+    text.split("").forEach((character) => {
         const span = document.createElement("span");
-        span.innerText = character;
+        span.textContent = character;
         quoteDisplay.appendChild(span);
     });
 
@@ -37,11 +35,14 @@ function updateCharacterHighlighting() {
     });
 }
 
+quoteDisplay.addEventListener("click", () => {
+    inputField.focus();
+});
+
 inputField.addEventListener("input", updateCharacterHighlighting);
 
 document.addEventListener("passage:loaded", (event) => {
     renderCharacters(event.detail.text);
     inputField.value = "";
+    inputField.focus();
 });
-
-renderCharacters(quoteDisplay.textContent.trim());

@@ -82,5 +82,14 @@ if (modalRestartBtn) {
     modalRestartBtn.addEventListener("click", loadNewPassage);
 }
 
+/* --- Modal "Close" button --- */
+const modalCloseBtn = document.getElementById("modal-close-btn");
+if (modalCloseBtn) {
+    modalCloseBtn.addEventListener("click", () => {
+        const modal = document.getElementById("result-modal");
+        if (modal) modal.classList.add("hidden");
+    });
+}
+
 /*  First load on page ready  */
 document.addEventListener("DOMContentLoaded", loadNewPassage);

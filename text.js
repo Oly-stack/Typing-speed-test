@@ -35,9 +35,9 @@ const passages = {
     ]
 };
 
-const DIFFICULTIES = ["easy", "medium", "hard"];
 const DEFAULT_DIFFICULTY = "easy";
 
+let currentDifficulty = DEFAULT_DIFFICULTY;
 
 function getRandomPassage(difficulty) {
     const list = passages[difficulty] || passages[DEFAULT_DIFFICULTY];
@@ -45,35 +45,24 @@ function getRandomPassage(difficulty) {
     return list[index];
 }
 
-/* INTEGRATION — loads a passage into #quote-display*/
-
-let currentDifficulty = DEFAULT_DIFFICULTY;
-
 function loadNewPassage() {
     const text = getRandomPassage(currentDifficulty);
 
-    
-    // highlight engine renders plain text so the app is testable.
-    const display = document.getElementById("quote-display");
-    if (display) {
-        display.textContent = text;
-    }
-
-    // Notify other modules (WPM, highlighting, timer) that a new passage loaded.
+    // highlight.js renders the text — it listens for this event.
     document.dispatchEvent(
-        new CustomEvent("passage:loaded", { detail: { text, difficulty: currentDifficulty } })
+        new CustomEvent("passage:loaded", {
+            detail: { text, difficulty: currentDifficulty }
+        })
     );
 }
 
 /*  Difficulty pill clicks  */
-
 const pills = document.querySelectorAll(".pill[data-difficulty]");
 
 pills.forEach((btn) => {
     btn.addEventListener("click", () => {
         currentDifficulty = btn.dataset.difficulty;
 
-        // Move the "active" class to the clicked pill
         pills.forEach((p) => p.classList.remove("active"));
         btn.classList.add("active");
 

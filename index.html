@@ -1,98 +1,113 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>TypeFlow | Typing Speed Test</title>
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
     <!-- FontAwesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="style.css">
-    <script src="highlight.js" defer></script>
+    <link rel="stylesheet" href="style.css" />
+
     <script src="text.js" defer></script>
-</head>
-<body>
-
+    <script src="highlight.js" defer></script>
+    <script src="stat.js" defer></script>     
+<script src="storage.js" defer></script>   
+<script src="timer.js" defer></script>
+  </head>
+  <body>
     <div class="container">
-        <!-- Top Nav / Brand -->
-        <div class="brand-header">
-            <span class="logo">TypeFlow</span>
-            <span class="top-highscore"><i class="fa-solid fa-trophy"></i> Best: <span id="top-best-wpm">72</span> WPM</span>
-        </div>
+      <!-- Top Nav / Brand -->
+      <div class="brand-header">
+        <span class="logo">TypeFlow</span>
+        <span class="top-highscore"
+          ><i class="fa-solid fa-trophy"></i> Best:
+          <span id="top-best-wpm"></span> WPM</span
+        >
+      </div>
 
-        <!-- Header -->
-        <header>
-            <h1>Test Your Typing Speed</h1>
-            <p>Improve your speed, accuracy, and consistency.</p>
-        </header>
+      <!-- Header -->
+      <header>
+        <h1>Test Your Typing Speed</h1>
+        <p>Improve your speed, accuracy, and consistency.</p>
+      </header>
 
-        <!-- Difficulty Pill Selector -->
-        <div class="difficulty-pills">
-            <button class="pill active" data-difficulty="easy">Easy</button>
-            <button class="pill" data-difficulty="medium">Medium</button>
-            <button class="pill" data-difficulty="hard">Hard</button>
-        </div>
+      <!-- Difficulty Pill Selector -->
+      <div class="difficulty-pills">
+        <button class="pill active" data-difficulty="easy">Easy</button>
+        <button class="pill" data-difficulty="medium">Medium</button>
+        <button class="pill" data-difficulty="hard">Hard</button>
+      </div>
 
-        <!-- Stats Dashboard -->
-        <div class="stats-container">
-            <div class="stat-box">
-                <span class="stat-label">WPM</span>
-                <span id="wpm-display" class="stat-value">0</span>
-            </div>
-            <div class="stat-box">
-                <span class="stat-label">Accuracy</span>
-                <span id="accuracy-display" class="stat-value">100%</span>
-            </div>
-            <div class="stat-box">
-                <span class="stat-label">Time</span>
-                <span id="timer-display" class="stat-value">60s</span>
-            </div>
+      <!-- Stats Dashboard -->
+      <div class="stats-container">
+        <div class="stat-box">
+          <span class="stat-label">WPM</span>
+          <span id="wpm-display" class="stat-value">0</span>
         </div>
+        <div class="stat-box">
+          <span class="stat-label">Accuracy</span>
+          <span id="accuracy-display" class="stat-value">100%</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-label">Time</span>
+          <span id="timer-display" class="stat-value">60s</span>
+        </div>
+      </div>
 
-        <!-- Typing Test Area -->
-        <div class="test-area-wrapper">
-            <div id="quote-display" class="quote-display">
-                <!-- Text characters will be dynamically injected here -->
-            </div>
-            <!-- Hidden real input field that captures user keystrokes -->
-            <input type="text" id="input-field" autocomplete="off" autocapitalize="off" spellcheck="false">
+      <!-- Typing Test Area -->
+      <div class="test-area-wrapper">
+        <div id="quote-display" class="quote-display">
+          <!-- Text characters will be dynamically injected here -->
         </div>
+        <!-- Hidden real input field that captures user keystrokes -->
+        <input
+          type="text"
+          id="input-field"
+          autocomplete="off"
+          autocapitalize="off"
+          spellcheck="false"
+        />
+      </div>
 
-        <!-- Action Buttons -->
-        <div class="actions">
-            <button id="restart-btn" class="btn-primary">Restart Test</button>
-        </div>
+      <!-- Action Buttons -->
+      <div class="actions">
+        <button id="restart-btn" class="btn-primary">Restart Test</button>
+      </div>
     </div>
 
     <!-- Results Modal Overlay -->
     <div id="result-modal" class="modal hidden">
-        <div class="modal-content">
-            <div class="success-badge"><i class="fa-solid fa-check"></i></div>
-            <h2>Test Complete!</h2>
-            
-            <div class="modal-stats-grid">
-                <div class="modal-stat">
-                    <span class="m-label">WPM</span>
-                    <span id="final-wpm" class="m-val">68</span>
-                </div>
-                <div class="modal-stat">
-                    <span class="m-label">Accuracy</span>
-                    <span id="final-accuracy" class="m-val">96%</span>
-                </div>
-                <div class="modal-stat best-stat-col">
-                    <div class="high-score-badge-pill">New High Score!</div>
-                    <span class="m-label">Best</span>
-                    <span id="modal-best-wpm" class="m-val accent-val">72 WPM</span>
-                </div>
-            </div>
+      <div class="modal-content">
+        <div class="success-badge"><i class="fa-solid fa-check"></i></div>
+        <h2>Test Complete!</h2>
 
-            <button id="modal-restart-btn" class="btn-primary">Try Again</button>
+        <div class="modal-stats-grid">
+          <div class="modal-stat">
+            <span class="m-label">WPM</span>
+            <span id="final-wpm" class="m-val">68</span>
+          </div>
+          <div class="modal-stat">
+            <span class="m-label">Accuracy</span>
+            <span id="final-accuracy" class="m-val">96%</span>
+          </div>
+          <div class="modal-stat best-stat-col">
+            <div class="high-score-badge-pill">New High Score!</div>
+            <span class="m-label">Best</span>
+            <span id="modal-best-wpm" class="m-val accent-val"> WPM</span>
+          </div>
         </div>
-    </div>
 
-    <!-- Custom JavaScript -->
-    <script src="script.js"></script>
-</body>
+        <button id="modal-restart-btn" class="btn-primary">Try Again</button>
+      </div>
+    </div>
+  </body>
 </html>

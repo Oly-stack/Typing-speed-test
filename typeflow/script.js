@@ -44,7 +44,20 @@ let timer = null;
 let finished = false;
 
 function getBest() {
-  return Number(localStorage.getItem(bestKey)) || 0;
+  try {
+    const saved = Number(localStorage.getItem(bestKey));
+    return Number.isFinite(saved) && saved > 0 ? saved : 0;
+  } catch (error) {
+    return 0;
+  }
+}
+
+function saveBest(value) {
+  try {
+    localStorage.setItem(bestKey, String(value));
+  } catch (error) {
+    return;
+  }
 }
 
 function showBest() {
@@ -52,7 +65,9 @@ function showBest() {
 }
 
 function pickText() {
-  const list = passages[level];
+  const list = passages[level].filter(function (item) {
+    return item !== text;
+  });
   return list[Math.floor(Math.random() * list.length)];
 }
 
@@ -107,7 +122,7 @@ function finishTest() {
   const isNewBest = result.wpm > previousBest;
 
   if (isNewBest) {
-    localStorage.setItem(bestKey, result.wpm);
+    saveBest(result.wpm);
   }
 
   finalWpm.textContent = result.wpm;
